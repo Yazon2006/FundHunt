@@ -2,7 +2,6 @@ package com.riteshk.fundhunt.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -82,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-
         if (menuItems != null) {
             menu.clear();
 
@@ -105,28 +101,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        if (menuItems != null) {
-//            menu.clear();
-//
-//            for (int i = 0; i < menuItems.size(); i++) {
-//                MenuItem item = menu.add(menuItems.get(i));
-//
-//                if (item != null) {
-//                    item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item) {
-//
-//                            return true;
-//                        }
-//                    });
-//                }
-//            }
-//        }
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 
     private void processMenu(JSONObject object) {
         menuItems = new ArrayList<>();

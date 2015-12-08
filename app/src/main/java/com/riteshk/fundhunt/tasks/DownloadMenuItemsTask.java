@@ -12,9 +12,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Yazon on 08.12.2015.
- */
 public class DownloadMenuItemsTask extends AsyncTask<String, Void, String> {
     private DownloadMenuItemsTaskResult callback;
 
