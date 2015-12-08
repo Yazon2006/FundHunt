@@ -12,16 +12,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Created by Yazon on 08.12.2015.
+ */
+public class DownloadMenuItemsTask extends AsyncTask<String, Void, String> {
+    private DownloadMenuItemsTaskResult callback;
 
-public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
-    DownloadWebpageTaskResult callback;
-
-    public DownloadWebpageTask(DownloadWebpageTaskResult callback) {
+        public DownloadMenuItemsTask(DownloadMenuItemsTaskResult callback) {
         this.callback = callback;
     }
 
-    @Override
-    protected String doInBackground(String... urls) {
+        @Override
+        protected String doInBackground(String... urls) {
 
         // params comes from the execute() call: params[0] is the url.
         try {
@@ -31,15 +33,12 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    @Override
-    protected void onPostExecute(String result) {
-        // remove the unnecessary parts from the response and construct a JSONArray
-        int start = result.indexOf("{", result.indexOf("{") + 1);
-        int end = result.lastIndexOf("}");
-        String jsonResponse = result.substring(start, end);
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
         try {
-            JSONObject table = new JSONObject(jsonResponse);
-            callback.onTableDownload(table);
+            JSONObject menuItems = new JSONObject(result);
+            callback.onMenuItemsDownload(menuItems);
         } catch (JSONException e) {
             e.printStackTrace();
         }
