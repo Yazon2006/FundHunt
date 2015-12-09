@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.riteshk.fundhunt.R;
+import com.riteshk.fundhunt.entities.MenuEntity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -19,7 +20,7 @@ public class MenuItemActivity extends AppCompatActivity {
     protected Toolbar toolbar;
 
     @Extra
-    protected String description;
+    protected MenuEntity menuEntity;
 
     @ViewById
     protected TextView description_textView;
@@ -30,10 +31,13 @@ public class MenuItemActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
+            if (menuEntity != null) {
+                actionBar.setTitle(menuEntity.getItemName());
+            }
         }
 
-        if (description != null) {
-            description_textView.setText(description);
+        if (menuEntity != null) {
+            description_textView.setText(menuEntity.getScreenContent());
         }
     }
 

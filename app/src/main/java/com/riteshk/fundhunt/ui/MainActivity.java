@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected ArrayList<TableEntity> entities;
 
     @InstanceState
-    protected ArrayList<MenuEntity> menuItems;
+    protected ArrayList<MenuEntity> menuEntities;
 
     @AfterViews
     protected void initViews() {
@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (menuItems != null) {
+        if (menuEntities != null) {
             menu.clear();
 
-            for (int i = 0; i < menuItems.size(); i++) {
-                MenuItem item = menu.add(menuItems.get(i).getItemName());
+            for (int i = 0; i < menuEntities.size(); i++) {
+                MenuItem item = menu.add(menuEntities.get(i).getItemName());
 
                 if (item != null) {
                     final int menuItemCount = i;
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                                 downloadTable();
                             } else {
                                 MenuItemActivity_.intent(MainActivity.this)
-                                        .description(menuItems.get(menuItemCount).getScreenContent())
+                                        .menuEntity(menuEntities.get(menuItemCount))
                                         .start();
                             }
                             return true;
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processMenu(JSONObject object) {
-        menuItems = EntityHelper.getMenuItems(object);
+        menuEntities = EntityHelper.getMenuItems(object);
         invalidateOptionsMenu();
     }
 
