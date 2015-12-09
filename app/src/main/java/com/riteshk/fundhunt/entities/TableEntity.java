@@ -3,7 +3,7 @@ package com.riteshk.fundhunt.entities;
 import java.io.Serializable;
 
 
-public class Entity implements Serializable {
+public class TableEntity implements Serializable {
 
     private Integer position;
 
@@ -15,7 +15,7 @@ public class Entity implements Serializable {
 
     private String col4;
 
-    public Entity (Integer position, String fundName, String col2, String col3, String col4) {
+    public TableEntity(Integer position, String fundName, String col2, String col3, String col4) {
         this.position = position;
         this.fundName = fundName;
         this.col2 = col2;

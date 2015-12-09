@@ -37,6 +37,7 @@ public class DownloadMenuItemsTask extends AsyncTask<String, Void, String> {
             JSONObject menuItems = new JSONObject(result);
             callback.onMenuItemsDownload(menuItems);
         } catch (JSONException e) {
+            callback.onErrorTableDownload();
             e.printStackTrace();
         }
     }

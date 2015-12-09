@@ -4,4 +4,5 @@ import org.json.JSONObject;
 
 public interface DownloadMenuItemsTaskResult {
     void onMenuItemsDownload(JSONObject object);
+    void onErrorTableDownload();
 }

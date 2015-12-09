@@ -40,6 +40,7 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
             JSONObject table = new JSONObject(jsonResponse);
             callback.onTableDownload(table);
         } catch (JSONException e) {
+            callback.onErrorTableDownload();
             e.printStackTrace();
         }
     }

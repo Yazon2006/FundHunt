@@ -4,12 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.riteshk.fundhunt.R;
-import com.riteshk.fundhunt.entities.Entity;
+import com.riteshk.fundhunt.entities.TableEntity;
 
 import java.util.ArrayList;
 
@@ -17,9 +16,9 @@ import java.util.ArrayList;
 public class EntityAdapter extends BaseAdapter {
 
     private Context context;
-    private final ArrayList<Entity> entities;
+    private final ArrayList<TableEntity> entities;
 
-    public EntityAdapter(Context context, ArrayList<Entity> entities) {
+    public EntityAdapter(Context context, ArrayList<TableEntity> entities) {
         this.context = context;
         this.entities = entities;
     }
@@ -46,19 +45,19 @@ public class EntityAdapter extends BaseAdapter {
             LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.entity, null);
         }
-        Entity entity = entities.get(position);
-        if (entity != null) {
+        TableEntity tableEntity = entities.get(position);
+        if (tableEntity != null) {
             TextView pos = (TextView) v.findViewById(R.id.position_textView);
             TextView fundName = (TextView) v.findViewById(R.id.fundName_textView);
             TextView col2 = (TextView) v.findViewById(R.id.col2_textView);
             TextView col3 = (TextView) v.findViewById(R.id.col3_textView);
             TextView col4 = (TextView) v.findViewById(R.id.col4_textView);
 
-            pos.setText(String.valueOf(entity.getPosition()));
-            fundName.setText(String.valueOf(entity.getFundName()));
-            col2.setText(String.valueOf(entity.getCol2()));
-            col3.setText(String.valueOf(entity.getCol3()));
-            col4.setText(String.valueOf(entity.getCol4()));
+            pos.setText(String.valueOf(tableEntity.getPosition()));
+            fundName.setText(tableEntity.getFundName());
+            col2.setText(tableEntity.getCol2());
+            col3.setText(tableEntity.getCol3());
+            col4.setText(tableEntity.getCol4());
         }
         return v;
     }

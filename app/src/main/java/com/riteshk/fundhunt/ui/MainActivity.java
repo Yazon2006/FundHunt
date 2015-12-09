@@ -1,27 +1,30 @@
 package com.riteshk.fundhunt.ui;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.riteshk.fundhunt.R;
 import com.riteshk.fundhunt.adapters.EntityAdapter;
-import com.riteshk.fundhunt.entities.Entity;
+import com.riteshk.fundhunt.entities.MenuEntity;
+import com.riteshk.fundhunt.entities.TableEntity;
 import com.riteshk.fundhunt.tasks.DownloadMenuItemsTask;
 import com.riteshk.fundhunt.tasks.DownloadMenuItemsTaskResult;
 import com.riteshk.fundhunt.tasks.DownloadWebpageTask;
 import com.riteshk.fundhunt.tasks.DownloadWebpageTaskResult;
 import com.riteshk.fundhunt.utils.AppConstants;
+import com.riteshk.fundhunt.utils.EntityHelper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,22 +32,30 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
+    private ActionBar actionBar;
+
     @ViewById
     protected Toolbar toolbar;
 
     @ViewById
     protected ListView listview;
 
-    @InstanceState
-    protected ArrayList<Entity> entities;
+    @ViewById
+    protected ProgressBar progress;
 
     @InstanceState
-    protected ArrayList<String> menuItems;
+    protected ArrayList<TableEntity> entities;
+
+    @InstanceState
+    protected ArrayList<MenuEntity> menuItems;
 
     @AfterViews
     protected void initViews() {
         setSupportActionBar(toolbar);
-
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(true);
+        }
         downloadMenuItems();
     }
 
@@ -62,10 +73,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadTable() {
+        showProgress();
         new DownloadWebpageTask(new DownloadWebpageTaskResult() {
             @Override
             public void onTableDownload(JSONObject object) {
                 processTable(object);
+                hideProgress();
+            }
+
+            @Override
+            public void onErrorTableDownload() {
+                hideProgress();
             }
         }).execute(AppConstants.URL_TABLE);
     }
@@ -76,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
             public void onMenuItemsDownload(JSONObject object) {
                 processMenu(object);
             }
+
+            @Override
+            public void onErrorTableDownload() {
+
+            }
         }).execute(AppConstants.URL_MENU);
     }
 
@@ -85,14 +108,18 @@ public class MainActivity extends AppCompatActivity {
             menu.clear();
 
             for (int i = 0; i < menuItems.size(); i++) {
-                MenuItem item = menu.add(menuItems.get(i));
+                MenuItem item = menu.add(menuItems.get(i).getItemName());
 
                 if (item != null) {
                     final int menuItemCount = i;
                     item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(MainActivity.this, menuItems.get(menuItemCount), Toast.LENGTH_SHORT).show();
+                            if (menuItemCount == 0) {
+                                downloadTable();
+                            } else {
+                                Toast.makeText(MainActivity.this, menuItems.get(menuItemCount).getScreenContent(), Toast.LENGTH_SHORT).show();
+                            }
                             return true;
                         }
                     });
@@ -103,47 +130,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processMenu(JSONObject object) {
-        menuItems = new ArrayList<>();
-
-        try {
-            JSONArray array = object.getJSONArray("MenuItems");
-
-            for (int i = 0; i < array.length(); ++i) {
-                JSONObject item = array.getJSONObject(i);
-                String menuItem = item.getString("Menu_item");
-                menuItems.add(menuItem);
-            }
-
-            invalidateOptionsMenu();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        menuItems = EntityHelper.getMenuItems(object);
+        invalidateOptionsMenu();
     }
 
     private void processTable(JSONObject object) {
-        entities = new ArrayList<>();
+        entities = EntityHelper.getTableItems(object);
 
-        try {
-            JSONArray rows = object.getJSONArray("rows");
-
-            for (int i = 0; i < rows.length(); ++i) {
-                JSONObject row = rows.getJSONObject(i);
-                JSONArray columns = row.getJSONArray("c");
-
-                Integer position = columns.getJSONObject(0).getInt("v");
-                String fundName = columns.getJSONObject(1).getString("v");
-                String col2 = columns.getJSONObject(2).getString("v");
-                String col3 = columns.getJSONObject(3).getString("v");
-                String col4 = columns.getJSONObject(4).getString("v");
-                Entity entity = new Entity(position, fundName, col2, col3, col4);
-                entities.add(entity);
-            }
-
-            final EntityAdapter adapter = new EntityAdapter(this, entities);
-            listview.setAdapter(adapter);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        final EntityAdapter adapter = new EntityAdapter(this, entities);
+        listview.setAdapter(adapter);
     }
+
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        progress.setVisibility(View.GONE);
+    }
+
 }
