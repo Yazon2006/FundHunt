@@ -32,8 +32,6 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
-    private ActionBar actionBar;
-
     @ViewById
     protected Toolbar toolbar;
 
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @AfterViews
     protected void initViews() {
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
         }
@@ -118,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
                             if (menuItemCount == 0) {
                                 downloadTable();
                             } else {
-                                Toast.makeText(MainActivity.this, menuItems.get(menuItemCount).getScreenContent(), Toast.LENGTH_SHORT).show();
+                                MenuItemActivity_.intent(MainActivity.this)
+                                        .description(menuItems.get(menuItemCount).getScreenContent())
+                                        .start();
                             }
                             return true;
                         }
