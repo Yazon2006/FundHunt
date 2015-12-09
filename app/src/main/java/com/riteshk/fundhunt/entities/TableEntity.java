@@ -5,9 +5,7 @@ import java.io.Serializable;
 
 public class TableEntity implements Serializable {
 
-    private Integer position;
-
-    private String fundName;
+    private String col1;
 
     private String col2;
 
@@ -15,16 +13,18 @@ public class TableEntity implements Serializable {
 
     private String col4;
 
-    public TableEntity(Integer position, String fundName, String col2, String col3, String col4) {
-        this.position = position;
-        this.fundName = fundName;
+    private String col5;
+
+    public TableEntity(String col1, String col2, String col3, String col4, String col5) {
+        this.col1 = col1;
         this.col2 = col2;
         this.col3 = col3;
         this.col4 = col4;
+        this.col5 = col5;
     }
 
-    public Integer getPosition() {
-        return position;
+    public String getCol1() {
+        return col1;
     }
 
     public String getCol2() {
@@ -39,8 +39,8 @@ public class TableEntity implements Serializable {
         return col4;
     }
 
-    public String getFundName() {
-        return fundName;
+    public String getCol5() {
+        return col5;
     }
 
 }

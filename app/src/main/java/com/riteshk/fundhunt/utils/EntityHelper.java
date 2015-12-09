@@ -15,18 +15,17 @@ public class EntityHelper {
         ArrayList<TableEntity> entities = new ArrayList<>();
 
         try {
-            JSONArray rows = object.getJSONArray("rows");
+            JSONArray array = object.getJSONArray("FundHunt");
 
-            for (int i = 0; i < rows.length(); ++i) {
-                JSONObject row = rows.getJSONObject(i);
-                JSONArray columns = row.getJSONArray("c");
+            for (int i = 0; i < array.length(); ++i) {
+                JSONObject item = array.getJSONObject(i);
+                String col1 = item.getString("col1");
+                String col2 = item.getString("col2");
+                String col3 = item.getString("col3");
+                String col4 = item.getString("col4");
+                String col5 = item.getString("col5");
 
-                Integer position = columns.getJSONObject(0).getInt("v");
-                String fundName = columns.getJSONObject(1).getString("v");
-                String col2 = columns.getJSONObject(2).getString("v");
-                String col3 = columns.getJSONObject(3).getString("v");
-                String col4 = columns.getJSONObject(4).getString("v");
-                TableEntity tableEntity = new TableEntity(position, fundName, col2, col3, col4);
+                TableEntity tableEntity = new TableEntity(col1, col2, col3, col4, col5);
                 entities.add(tableEntity);
             }
 
