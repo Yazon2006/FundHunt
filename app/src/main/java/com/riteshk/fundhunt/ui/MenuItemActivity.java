@@ -32,7 +32,9 @@ public class MenuItemActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(true);
         }
 
-        description_textView.setText(description);
+        if (description != null) {
+            description_textView.setText(description);
+        }
     }
 
 }
